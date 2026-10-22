@@ -3,10 +3,11 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class MovingPlatform : MonoBehaviour
 {
-    public Transform pointA, pointB;
     public float speed = 2f;
+
+    public Transform pointA, pointB;
     private Rigidbody2D rb;
-    private Vector2 target;
+    private Vector2 target, velocity;
 
     private void Awake()
     {
@@ -14,30 +15,22 @@ public class MovingPlatform : MonoBehaviour
         target = pointB.position;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    public Vector2 GetVelocity()
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            collision.transform.SetParent(transform);
-        }
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            collision.transform.SetParent(null);
-        }
+        return velocity;
     }
 
     private void FixedUpdate()
     {
         Vector2 move = Vector2.MoveTowards(rb.position, target, speed * Time.fixedDeltaTime);
+        
         rb.MovePosition(move);
 
         if (Vector2.Distance(rb.position, target) < 0.1f)
         {
             target = (target == (Vector2)pointA.position) ? pointB.position : pointA.position;
         }
+
+        velocity = (move - rb.position) / Time.fixedDeltaTime;
     }
 }
