@@ -14,6 +14,22 @@ public class MovingPlatform : MonoBehaviour
         target = pointB.position;
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            collision.transform.SetParent(transform);
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            collision.transform.SetParent(null);
+        }
+    }
+
     private void FixedUpdate()
     {
         Vector2 move = Vector2.MoveTowards(rb.position, target, speed * Time.fixedDeltaTime);

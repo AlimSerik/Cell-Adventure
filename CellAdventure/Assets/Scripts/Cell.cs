@@ -3,6 +3,8 @@ using UnityEngine.InputSystem;
 
 public class Cell : MonoBehaviour
 {
+    [SerializeField] private float moveSpeed = 5f;
+
     private Rigidbody2D rb;
     private InputAction moveAction;
 
@@ -15,6 +17,6 @@ public class Cell : MonoBehaviour
     private void Update()
     {
         Vector2 move = moveAction.ReadValue<Vector2>();
-        rb.linearVelocity = new Vector2(move.x, rb.linearVelocity.y);
+        rb.linearVelocity = new Vector2(move.x * moveSpeed, rb.linearVelocity.y);
     }
 }
